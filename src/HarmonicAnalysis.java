@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HarmonicAnalysis {
 
@@ -16,41 +13,26 @@ public class HarmonicAnalysis {
 	static final String[] NOTE_NAMES = new String[] {"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"};
 	static final String[] MAJOR_ROMAN_NUMERALS = new String[] {"I", "bII", "II", "bIII", "III", "IV", "bV", "V", "bVI", "VI", "bVII", "VII"};
 	static final String[] MINOR_ROMAN_NUMERALS = new String[] {"i", "bii", "ii", "biii", "iii", "iv", "bv", "v", "bvi", "vi", "bvii", "vii"};
-	static final Map<List<Integer>, String> NUMERICAL_CHORD_DICTIONARY;
+	static final String[] pitchBasedSuffixes = new String[]{"", "7", "M7", "m", "m7", "mM7", "(b5)", "m7b5", "dim7", "+", "+7", "+M7"};
+    static final String[] numericalSuffixes = new String[]{"", "7", "M7", "", "7", "M7", "(b5)", "m7b5", "dim7", "+", "+7", "+M7"};
+    static final List<List<Integer>> CHORD_INTERVAL_DICTIONARY;
     static {
-        Map<List<Integer>, String> tempChordMap = new LinkedHashMap<>();
-        tempChordMap.put(Arrays.asList(0, 4, 7),	"");
-        tempChordMap.put(Arrays.asList(0, 4, 7, 10),"7");
-        tempChordMap.put(Arrays.asList(0, 4, 7, 11),"M7");
-        tempChordMap.put(Arrays.asList(0, 3, 7), 	"");
-        tempChordMap.put(Arrays.asList(0, 3, 7, 10),"7");
-        tempChordMap.put(Arrays.asList(0, 3, 7, 11),"M7");
-        tempChordMap.put(Arrays.asList(0, 3, 6), 	"(b5)");
-        tempChordMap.put(Arrays.asList(0, 3, 6, 10),"m7b5");
-        tempChordMap.put(Arrays.asList(0, 3, 6, 9),	"dim7");
-        tempChordMap.put(Arrays.asList(0, 4, 8), 	"+");
-        tempChordMap.put(Arrays.asList(0, 4, 8, 10),"+7");
-        tempChordMap.put(Arrays.asList(0, 4, 8, 11),"+M7");
-        NUMERICAL_CHORD_DICTIONARY = Collections.unmodifiableMap(tempChordMap);
+    	List<List<Integer>> tempChordList = new ArrayList<List<Integer>>();
+        tempChordList.add(Arrays.asList(0, 4, 7));
+        tempChordList.add(Arrays.asList(0, 4, 7, 10));
+        tempChordList.add(Arrays.asList(0, 4, 7, 11));
+        tempChordList.add(Arrays.asList(0, 3, 7));
+        tempChordList.add(Arrays.asList(0, 3, 7, 10));
+        tempChordList.add(Arrays.asList(0, 3, 7, 11));
+        tempChordList.add(Arrays.asList(0, 3, 6));
+        tempChordList.add(Arrays.asList(0, 3, 6, 10));
+        tempChordList.add(Arrays.asList(0, 3, 6, 9));
+        tempChordList.add(Arrays.asList(0, 4, 8));
+        tempChordList.add(Arrays.asList(0, 4, 8, 10));
+        tempChordList.add(Arrays.asList(0, 4, 8, 11));
+        CHORD_INTERVAL_DICTIONARY = tempChordList;
     }
-    static final Map<List<Integer>, String> PITCH_CHORD_DICTIONARY;
-    static {
-        Map<List<Integer>, String> tempChordMap = new LinkedHashMap<>();
-        tempChordMap.put(Arrays.asList(0, 4, 7),	"");
-        tempChordMap.put(Arrays.asList(0, 4, 7, 10),"7");
-        tempChordMap.put(Arrays.asList(0, 4, 7, 11),"M7");
-        tempChordMap.put(Arrays.asList(0, 3, 7), 	"m");
-        tempChordMap.put(Arrays.asList(0, 3, 7, 10),"m7");
-        tempChordMap.put(Arrays.asList(0, 3, 7, 11),"mM7");
-        tempChordMap.put(Arrays.asList(0, 3, 6), 	"(b5)");
-        tempChordMap.put(Arrays.asList(0, 3, 6, 10),"m7b5");
-        tempChordMap.put(Arrays.asList(0, 3, 6, 9),	"dim7");
-        tempChordMap.put(Arrays.asList(0, 4, 8), 	"+");
-        tempChordMap.put(Arrays.asList(0, 4, 8, 10),"+7");
-        tempChordMap.put(Arrays.asList(0, 4, 8, 11),"+M7");
-        PITCH_CHORD_DICTIONARY = Collections.unmodifiableMap(tempChordMap);
-    }
-	
+    
     // Scales for testing purposes
  	static int[] major = new int[] {1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1};
  	static int[] minor = new int[] {1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0};
@@ -60,10 +42,10 @@ public class HarmonicAnalysis {
 	private int[] mainScale;
 	private int[] currentMode;
 	private ArrayList<Integer> noteLocations = new ArrayList<Integer>();
-	private ArrayList<String> tempAlphaChords = new ArrayList<String>();
-	private ArrayList<String> tempNumChords = new ArrayList<String>();
-	private ArrayList<ArrayList<String>> chordsNamedTonally = new ArrayList<ArrayList<String>>();
-	private ArrayList<ArrayList<String>> chordsNamedNumerically = new ArrayList<ArrayList<String>>();
+	private ArrayList<String> tempPitchBasedNames = new ArrayList<String>();
+	private ArrayList<String> tempNumericalNames = new ArrayList<String>();
+	private ArrayList<ArrayList<String>> allChordsNamedByPitch = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList<String>> allChordsNamedNumerically = new ArrayList<ArrayList<String>>();
 	
 	
 	public static void main(String[] args) {
@@ -177,20 +159,16 @@ public class HarmonicAnalysis {
 	
 	private void findChordsFromCurrentRoot(Integer degree) {
 		
-		for(Map.Entry<List<Integer>, String> potentialChord : NUMERICAL_CHORD_DICTIONARY.entrySet()) {
+		int chordNameSuffixIndex = 0;
+		for(List<Integer> potentialChord : CHORD_INTERVAL_DICTIONARY) {
 			
-			if(currentModeContainsChord(potentialChord.getKey())) {
-				String chordNameNum = nameChord(degree, potentialChord, 1);
-				tempNumChords.add(chordNameNum);
+			if(currentModeContainsChord(potentialChord)) {
+				String[] chordNames = nameChord(degree, potentialChord, chordNameSuffixIndex);
+				tempPitchBasedNames.add(chordNames[0]);
+				tempNumericalNames.add(chordNames[1]);
+				
 			}
-		}
-		
-		for(Map.Entry<List<Integer>, String> potentialChord : PITCH_CHORD_DICTIONARY.entrySet()) {
-			
-			if(currentModeContainsChord(potentialChord.getKey())) {
-				String chordNameAlpha = nameChord(degree, potentialChord, 0);
-				tempAlphaChords.add(chordNameAlpha);
-			}
+			chordNameSuffixIndex++;
 		}
 		
 	}//end findChordsFromCurrentRoot
@@ -209,40 +187,34 @@ public class HarmonicAnalysis {
 	}//end currentModeContainsChord
 	
 	
-	private String nameChord(Integer degree, Map.Entry<List<Integer>, String> chord, int marker) {
+	private String[] nameChord(Integer degree, List<Integer> chord, int suffixIndex) {
 		
 		String tempString = "";
+		String[] tempArray = new String[2];
 		
-		
-		if(marker==1) {
-			
-			if(chordIsMajor(chord)) {
-				tempString = MAJOR_ROMAN_NUMERALS[degree];
-			}
-			else {
-				tempString = MINOR_ROMAN_NUMERALS[degree];
-			}
-			
-			if( (chord.getKey().size() == 3) && (chord.getKey().get(2) == 7) ) {
-				return tempString;
-			}
-			
-			tempString = tempString + chord.getValue();
-			return tempString;
-			
+		tempString = NOTE_NAMES[degree];
+		tempString = tempString + pitchBasedSuffixes[suffixIndex];
+		tempArray[0] = tempString;
+		tempString = "";
+	
+		if(chordIsMajor(chord)) {
+			tempString = MAJOR_ROMAN_NUMERALS[degree];
 		}
-		
 		else {
-			tempString = NOTE_NAMES[degree];
-			tempString = tempString + chord.getValue();
-			return tempString;
+			tempString = MINOR_ROMAN_NUMERALS[degree];
 		}
+	
+		tempString = tempString + numericalSuffixes[suffixIndex];
+		tempArray[1] = tempString;
+
+		return tempArray;
+		
 	}//end nameChord
 	
 	
-	private boolean chordIsMajor(Map.Entry<List<Integer>, String> chord) {
+	private boolean chordIsMajor(List<Integer> chord) {
 		
-		if(chord.getKey().contains(MAJOR_THIRD)) {
+		if(chord.contains(MAJOR_THIRD)) {
 			return true;
 		}
 		return false;
@@ -252,10 +224,10 @@ public class HarmonicAnalysis {
 	
 	private void addNewChordsToList() {
 		
-		chordsNamedTonally.add(new ArrayList<>(tempAlphaChords));
-	    chordsNamedNumerically.add(new ArrayList<>(tempNumChords));
-	    tempAlphaChords.clear();
-	    tempNumChords.clear();
+		allChordsNamedByPitch.add(new ArrayList<>(tempPitchBasedNames));
+	    allChordsNamedNumerically.add(new ArrayList<>(tempNumericalNames));
+	    tempPitchBasedNames.clear();
+	    tempNumericalNames.clear();
 		
 	}//end addNewChordsToList
 	
@@ -263,7 +235,7 @@ public class HarmonicAnalysis {
 	private void printAllChords() {
 		
 		System.out.println("Chords:\n");
-		for (ArrayList<String> mode : chordsNamedTonally) {
+		for (ArrayList<String> mode : allChordsNamedByPitch) {
 			for(int i=0; i < mode.size(); i++) {
 
 			    if( (mode.size() - i) == 1) {
@@ -277,7 +249,7 @@ public class HarmonicAnalysis {
 		
 		System.out.println("\n\nRoman Numerals:\n");
 		
-		for (ArrayList<String> mode : chordsNamedNumerically) {
+		for (ArrayList<String> mode : allChordsNamedNumerically) {
 			for(int i=0; i < mode.size(); i++) {
 			    if( (mode.size() - i) == 1) {
 			        System.out.format("%-10s %n", mode.get(i));
@@ -287,9 +259,8 @@ public class HarmonicAnalysis {
 			    }
 			}
 	    }
+		System.out.println();
 
 	}// end printAllChords
 	
 }//end class HarmonicAnalysis
-
-//test
