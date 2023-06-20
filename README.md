@@ -8,7 +8,7 @@ This Java program performs harmonic analysis on a given musical scale and genera
 - Generation of chords based on the harmonic analysis.
 - Prints the results to the command line.
 
-\# How to Use
+# How to Use
 
 The program accepts a 12-character string as an argument, where each character is either a 0 or a 1. Each character represents a note in the 12-tone musical system, with a 1 indicating the presence of the note in the scale and a 0 indicating its absence.
 
