@@ -39,6 +39,7 @@ public class HarmonicAnalysis {
  	static int[] test = new int[] {1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1};
     
 	// Variables used in each instance of analysis
+ 	private int key;
 	private int[] mainScale;
 	private int[] currentMode;
 	private List<Integer> noteLocations = new ArrayList<Integer>();
@@ -47,48 +48,74 @@ public class HarmonicAnalysis {
 	private List<ArrayList<String>> allChordsNamedByPitch = new ArrayList<ArrayList<String>>();
 	private List<ArrayList<String>> allChordsNamedNumerically = new ArrayList<ArrayList<String>>();
 	
+	private static String userInput;
+	private static int tonic;
+	
 	
 	public static void main(String[] args) {
 		
+		userInput = String.join(" ", args);
 		HarmonicAnalysis harmonicAnalysis = new HarmonicAnalysis();
 		
-		if(args.length > 0) {
-			if(validUserInput(args[0])) {
-				int[] scale = translateInputToScale(args[0]);
-				harmonicAnalysis.start(scale);
-			}
-			else {
-				harmonicAnalysis.start(major);
-			}
+		if(args.length == 0) {
+			harmonicAnalysis.start(0, major);
 		}
 		else {
-			harmonicAnalysis.start(major);
+			if(!validUserInput()) {
+				harmonicAnalysis.start(0, major);
+			}
+			else {
+				assignTonic();
+				String userGivenScale = userInput.substring(0, TONE_COUNT);
+				int[] scale = translateInputToScale(userGivenScale);
+				harmonicAnalysis.start(tonic, scale);
+			}
 		}
 	}//end main
 	
 	
-	private static boolean validUserInput(String userInput) {
+	private static boolean validUserInput() {
 		
-	    return userInput.matches("[01]{12}");
-	  
+	    if(userInput.matches("[01]{12}")) {
+	    	return true;
+	    }
+	    else if(userInput.matches("^[01]{12} ([0-9]|1[01])$")){
+	    	return true;
+	    }
+	    else {
+	    	return false;
+	    }
 	}//end validUserInput
 	
 	
-	private static int[] translateInputToScale(String userInput) {
+	private static void assignTonic() {
 		
-		int[] scale = new int[userInput.length()];
+		if(userInput.length() == TONE_COUNT) {
+			tonic = 0;
+		}
+		else {
+			String givenKey = userInput.substring(TONE_COUNT + 1);
+			tonic = Integer.parseInt(givenKey);
+		}
 		
-	    for (int i = 0; i < userInput.length(); i++) {
-	        scale[i] = Character.getNumericValue(userInput.charAt(i));
+	}//end assignTonic
+	
+	
+	private static int[] translateInputToScale(String userGivenScale) {
+		
+		int[] scale = new int[userGivenScale.length()];
+		
+	    for (int i = 0; i < userGivenScale.length(); i++) {
+	        scale[i] = Character.getNumericValue(userGivenScale.charAt(i));
 	    }
 	    return scale;
 		
 	}//end translateInputToScale
 	
 	
-	private void start(int[] scale) {
+	private void start(int key, int[] scale) {
 		
-		assignScale(scale);
+		assignKeyAndScale(key, scale);
 		findScaleNoteLocations();
 		findAvailableChords();
 		printNoteLocations();
@@ -97,8 +124,9 @@ public class HarmonicAnalysis {
 	}//end start
 	
 	
-	private void assignScale(int[] scale) {
+	private void assignKeyAndScale(int key, int[] scale) {
 		
+		this.key = key;
 		this.mainScale = scale;
 		this.currentMode = this.mainScale;
 		
@@ -180,7 +208,7 @@ public class HarmonicAnalysis {
 		String tempString = "";
 		String[] tempArray = new String[2];
 		
-		tempString = NOTE_NAMES[degree];
+		tempString = NOTE_NAMES[(degree + key) % TONE_COUNT];
 		tempString = tempString + pitchBasedSuffixes[suffixIndex];
 		tempArray[0] = tempString;
 		tempString = "";
