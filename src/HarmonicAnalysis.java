@@ -9,7 +9,6 @@ public class HarmonicAnalysis {
 	static final int MAJOR_THIRD = 4;
 		
 	// Dictionaries
-	static final String[] SCALE_DEGREES = new String[] {"1", "b2", "2", "b3", "3", "4", "#4/b5", "5", "b6", "6", "b7", "7"};
 	static final String[] NOTE_NAMES = new String[] {"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"};
 	static final String[] MAJOR_ROMAN_NUMERALS = new String[] {"I", "bII", "II", "bIII", "III", "IV", "bV", "V", "bVI", "VI", "bVII", "VII"};
 	static final String[] MINOR_ROMAN_NUMERALS = new String[] {"i", "bii", "ii", "biii", "iii", "iv", "bv", "v", "bvi", "vi", "bvii", "vii"};
@@ -47,6 +46,7 @@ public class HarmonicAnalysis {
 	private List<String> tempNumericalNames = new ArrayList<String>();
 	private List<ArrayList<String>> allChordsNamedByPitch = new ArrayList<ArrayList<String>>();
 	private List<ArrayList<String>> allChordsNamedNumerically = new ArrayList<ArrayList<String>>();
+	private List<String> noteDegreeNames;			//?
 	
 	private static String userInput;
 	private static int tonic;
@@ -116,10 +116,11 @@ public class HarmonicAnalysis {
 	private void start(int key, int[] scale) {
 		
 		assignKeyAndScale(key, scale);
+		noteDegreeNames = ScaleDegreeNaming.start(scale);
 		findScaleNoteLocations();
 		findAvailableChords();
-		printNoteLocations();
-		printAllChords();
+		InputOutput.printNoteLocations(noteDegreeNames);
+		InputOutput.printAllChords(allChordsNamedByPitch, allChordsNamedNumerically);
 		
 	}//end start
 	
@@ -246,43 +247,5 @@ public class HarmonicAnalysis {
 	    tempNumericalNames.clear();
 		
 	}//end addNewChordsToList
-	
-	
-	private void printNoteLocations() {
-		
-		System.out.println("\nScale Intervals:\n");
-		
-		for(Integer note : noteLocations) {
-			System.out.print(SCALE_DEGREES[note] + " ");
-		}
-		System.out.println("\n\n");
-		
-	}//end printNoteLocations
-	
-	
-	private void printAllChords() {
-		
-		System.out.println("Chords:\n");
-		printChordsByMode(allChordsNamedByPitch);
-		System.out.println("\n\nRoman Numerals:\n");
-		printChordsByMode(allChordsNamedNumerically);
-		System.out.println();
 
-	}// end printAllChords
-	
-	
-	private void printChordsByMode(List<ArrayList<String>> chordList) {
-		
-		for (List<String> mode : chordList) {
-			for(int i=0; i < mode.size(); i++) {
-			    if( (mode.size() - i) == 1) {
-			        System.out.format("%-10s %n", mode.get(i));
-			    }
-			    else {
-			        System.out.format("%-10s", mode.get(i));
-			    }
-			}
-	    }
-	}//end printChordsByMode
-	
 }//end class HarmonicAnalysis
