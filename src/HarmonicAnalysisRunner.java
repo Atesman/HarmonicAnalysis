@@ -6,7 +6,7 @@ public class HarmonicAnalysisRunner {
 	// Scales for testing purposes
  	static int[] major = new int[] {1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1};
  	static int[] minor = new int[] {1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0};
- 	static int[] test = new int[] {1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1};
+ 	static int[] test = new int[] {1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1};
 	
 	private static String userInput;
 	private static int tonic;
