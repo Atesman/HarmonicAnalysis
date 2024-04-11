@@ -4,6 +4,28 @@ import java.util.List;
 public class InputOutput {
 
 	
+	static public void printScaleName(String[] scaleInfo) {
+		
+		System.out.println("Scale Name:\n");
+		
+		if(scaleInfo[0].isEmpty()) {
+			System.out.println("Unknown");
+		}
+		
+		else {
+			System.out.println(scaleInfo[0]);
+			
+			if(scaleInfo[1].isEmpty()) {
+				System.out.println("\n");
+			}
+			else {
+				System.out.println(scaleInfo[1] + "\n");
+			}
+		}
+		
+	}//end scaleInfo
+	
+	
 	static public void printNoteLocations(List<String> noteDegreeNames) {
 		
 		System.out.println("\nScale Intervals:\n");
