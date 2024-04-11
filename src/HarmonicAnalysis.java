@@ -49,6 +49,7 @@ public class HarmonicAnalysis {
 		noteDegreeNames = ScaleDegreeNaming.start(scale);
 		findScaleNoteLocations();
 		findAvailableChords();
+		InputOutput.printScaleName(DetectScale.detectScale(scale));
 		InputOutput.printNoteLocations(noteDegreeNames);
 		InputOutput.printAllChords(allChordsNamedByPitch, allChordsNamedNumerically);
 		
