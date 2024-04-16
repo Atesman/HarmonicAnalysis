@@ -7,8 +7,6 @@ public class DetectScale {
 
 	    static {
 	    	
-	    	//scaleDictionary.put("", new String[]{"", ""});
-	    	
 	    //PENTATONIC
 
 	    	scaleDictionary.put("101010010100", new String[]{"Major Pentatonic", ""});
@@ -52,7 +50,25 @@ public class DetectScale {
 	        scaleDictionary.put("101011011010", new String[]{"Mixolydian b6", "5th Mode of the Melodic Minor Scale"});
 	        scaleDictionary.put("101101101010", new String[]{"Aeolian b5", "6th Mode of the Melodic Minor Scale"});
 	        scaleDictionary.put("110110101010", new String[]{"Altered", "7th Mode of the Melodic Minor Scale / aka Altered Dominant, Super Locrian, or Diminished Whole Tone"});
-	        	
+	        
+	        //Harmonic Major
+	        scaleDictionary.put("101011011001", new String[]{"Harmonic Major", ""});
+	        scaleDictionary.put("101101100110", new String[]{"Dorian b5", "2nd Mode of the Harmonic Major Scale"});
+	        scaleDictionary.put("110110011010", new String[]{"Phrygian b4", "3rd Mode of the Harmonic Major Scale"});
+	        scaleDictionary.put("101100110101", new String[]{"Melodic Minor #4", "4th Mode of the Harmonic Major Scale"});
+	        scaleDictionary.put("110011010110", new String[]{"Mixolydian b2", "5th Mode of the Harmonic Major Scale"});
+	        scaleDictionary.put("100110101101", new String[]{"Lydian Augmented #2", "6th Mode of the Harmonic Major Scale"});
+	        scaleDictionary.put("110101101100", new String[]{"Locrian bb7", "7th Mode of the Harmonic Major Scale"});
+	        
+	        //Double Harmonic Major
+	        scaleDictionary.put("110011011001", new String[]{"Double Harmonic Major", "aka Byzantine or Gypsy Major"});
+	        scaleDictionary.put("100110110011", new String[]{"Lydian #2 #6", "2nd Mode of the Double Harmonic Major Scale"});
+	        scaleDictionary.put("110110011100", new String[]{"Ultraphrygian", "3rd Mode of the Double Harmonic Major Scale"});
+	        scaleDictionary.put("101100111001", new String[]{"Double Harmonic Minor", "4th Mode of the Double Harmonic Major Scale / aka Hungarian Minor or Gypsy Minor"});
+	        scaleDictionary.put("110011100110", new String[]{"Oriental", "5th Mode of the Double Harmonic Major Scale"});
+	        scaleDictionary.put("100111001101", new String[]{"Ionian #2 #5", "6th Mode of the Double Harmonic Major Scale"});
+	        scaleDictionary.put("111001101100", new String[]{"Locrian bb3 bb7", "7th Mode of the Double Harmonic Major Scale"});
+	        
 	    //OCTATONIC
 	        
 	        scaleDictionary.put("101101101101", new String[]{"Diminished", "Whole-Half Diminished"});
