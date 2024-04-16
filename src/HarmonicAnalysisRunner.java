@@ -10,6 +10,7 @@ public class HarmonicAnalysisRunner {
 	
 	private static String userInput;
 	private static int tonic;
+	private static int sharpOrFlat = 0;
 	
 	
 	public static void main(String[] args) {
@@ -18,17 +19,17 @@ public class HarmonicAnalysisRunner {
 		HarmonicAnalysis harmonicAnalysis = new HarmonicAnalysis();
 		
 		if(args.length == 0) {
-			harmonicAnalysis.start(0, test);
+			harmonicAnalysis.start(0, test, sharpOrFlat);
 		}
 		else {
 			if(!validUserInput()) {
-				harmonicAnalysis.start(0, major);
+				harmonicAnalysis.start(0, major, sharpOrFlat);
 			}
 			else {
 				assignTonic();
 				String userGivenScale = userInput.substring(0, TONE_COUNT);
 				int[] scale = translateInputToScale(userGivenScale);
-				harmonicAnalysis.start(tonic, scale);
+				harmonicAnalysis.start(tonic, scale, sharpOrFlat);
 			}
 		}
 	}//end main

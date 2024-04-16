@@ -9,22 +9,30 @@ public class HarmonicAnalysis {
 	static final int MAJOR_THIRD = 4;
 		
 	// Dictionaries
-	static final String[] NOTE_NAMES = new String[] {"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"};
+	static String[] NOTE_NAMES;
+	static final String[] BOTH_NOTE_NAMES = new String[] {"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"};
+	static final String[] SHARP_NOTE_NAMES = new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+	static final String[] FLAT_NOTE_NAMES = new String[] {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
+	
 	static final String[] MAJOR_ROMAN_NUMERALS = new String[] {"I", "bII", "II", "bIII", "III", "IV", "bV", "V", "bVI", "VI", "bVII", "VII"};
 	static final String[] MINOR_ROMAN_NUMERALS = new String[] {"i", "bii", "ii", "biii", "iii", "iv", "bv", "v", "bvi", "vi", "bvii", "vii"};
 	static final String[] pitchBasedSuffixes = new String[]{"", "7", "M7", "m", "m7", "mM7", "(b5)", "m7b5", "dim7", "+", "+7", "+M7"};
     static final String[] numericalSuffixes = new String[]{"", "7", "M7", "", "7", "M7", "(b5)", "m7b5", "dim7", "+", "+7", "+M7"};
     static final List<List<Integer>> CHORD_INTERVAL_DICTIONARY;
     static {List<List<Integer>> tempChordList = new ArrayList<List<Integer>>();
+    	//Major
         tempChordList.add(Arrays.asList(0, 4, 7));
         tempChordList.add(Arrays.asList(0, 4, 7, 10));
         tempChordList.add(Arrays.asList(0, 4, 7, 11));
+        //Minor
         tempChordList.add(Arrays.asList(0, 3, 7));
         tempChordList.add(Arrays.asList(0, 3, 7, 10));
         tempChordList.add(Arrays.asList(0, 3, 7, 11));
+        //Diminished
         tempChordList.add(Arrays.asList(0, 3, 6));
         tempChordList.add(Arrays.asList(0, 3, 6, 10));
         tempChordList.add(Arrays.asList(0, 3, 6, 9));
+        //Augmented
         tempChordList.add(Arrays.asList(0, 4, 8));
         tempChordList.add(Arrays.asList(0, 4, 8, 10));
         tempChordList.add(Arrays.asList(0, 4, 8, 11));
@@ -43,13 +51,15 @@ public class HarmonicAnalysis {
 	private List<String> noteDegreeNames;			//?
 	
 	
-	public void start(int key, int[] scale) {
+	public void start(int key, int[] scale, int sharpOrFlat) {
 		
 		assignKeyAndScale(key, scale);
-		noteDegreeNames = ScaleDegreeNaming.start(scale);
+		assignNoteNames(sharpOrFlat);
 		findScaleNoteLocations();
 		findAvailableChords();
+		
 		InputOutput.printScaleName(DetectScale.detectScale(scale));
+		noteDegreeNames = ScaleDegreeNaming.start(scale);
 		InputOutput.printNoteLocations(noteDegreeNames);
 		InputOutput.printAllChords(allChordsNamedByPitch, allChordsNamedNumerically);
 		
@@ -62,9 +72,26 @@ public class HarmonicAnalysis {
 		this.mainScale = scale;
 		this.currentMode = this.mainScale;
 		
-	}//end assignScale
+	}//end assignKeyAndScale
+	
+	
+	private void assignNoteNames(int sharpOrFlat) {
+		
+		if(sharpOrFlat == 1) {
+			NOTE_NAMES = SHARP_NOTE_NAMES;
+			return;
+		}
+		if(sharpOrFlat == 2) {
+			NOTE_NAMES = FLAT_NOTE_NAMES;
+			return;
+		}
+		else {
+			NOTE_NAMES = BOTH_NOTE_NAMES;
+		}
+		
+	}//end assignNoteNames
 
-
+	
 	private void findScaleNoteLocations() {
 		
 		for(int i = 0; i < TONE_COUNT; i++) {
