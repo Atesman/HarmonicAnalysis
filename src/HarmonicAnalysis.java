@@ -16,8 +16,8 @@ public class HarmonicAnalysis {
 	
 	static final String[] MAJOR_ROMAN_NUMERALS = new String[] {"I", "bII", "II", "bIII", "III", "IV", "bV", "V", "bVI", "VI", "bVII", "VII"};
 	static final String[] MINOR_ROMAN_NUMERALS = new String[] {"i", "bii", "ii", "biii", "iii", "iv", "bv", "v", "bvi", "vi", "bvii", "vii"};
-	static final String[] pitchBasedSuffixes = new String[]{"", "7", "M7", "m", "m7", "mM7", "(b5)", "m7b5", "dim7", "+", "+7", "+M7"};
-    static final String[] numericalSuffixes = new String[]{"", "7", "M7", "", "7", "M7", "(b5)", "m7b5", "dim7", "+", "+7", "+M7"};
+	static final String[] pitchBasedSuffixes = new String[]{"", "7", "M7", "m", "m7", "mM7", "dim", "m7b5", "dim7", "dim(M7)", "+", "+7", "+M7"};
+    static final String[] numericalSuffixes = new String[]{"", "7", "M7", "", "7", "M7", "(b5)", "m7b5", "dim7", "(b5)M7", "+", "+7", "+M7"};
     static final List<List<Integer>> CHORD_INTERVAL_DICTIONARY;
     static {List<List<Integer>> tempChordList = new ArrayList<List<Integer>>();
     	//Major
@@ -32,6 +32,7 @@ public class HarmonicAnalysis {
         tempChordList.add(Arrays.asList(0, 3, 6));
         tempChordList.add(Arrays.asList(0, 3, 6, 10));
         tempChordList.add(Arrays.asList(0, 3, 6, 9));
+        tempChordList.add(Arrays.asList(0, 3, 6, 11));
         //Augmented
         tempChordList.add(Arrays.asList(0, 4, 8));
         tempChordList.add(Arrays.asList(0, 4, 8, 10));
